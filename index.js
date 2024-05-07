@@ -7,6 +7,15 @@ const Tutor       = require('./models/Tutor');
 const app = express()
 const PORT = 3005
 
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended: false})); //receber conteúdos do body 
+
+//rotas
+app.get('/tutors', async (req, res) => {
+  const tutors = await Tutor.findAll({raw:true}) //capturando todos os tutores
+  res.status(200).send(tutors)
+})
+
 
 //Verificando conexão do banco de dados SQlite
 connection.authenticate()
