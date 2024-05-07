@@ -58,6 +58,18 @@ app.put('/tutor/:id', async (req, res) => {
     })
 })
 
+app.delete('/tutor/:id', async (req, res) => {
+  const id = req.params.id 
+
+  await Tutor.destroy({ where: {id : id}})
+  .then(() => {
+    res.status(200).json({message: 'Tutor foi removido com sucesso!'})
+  })
+  .catch((error) => {
+    onsole.log(error)
+    res.status(500).json(error)
+  })
+})
 
 //Verificando conexão do banco de dados SQlite
 connection.authenticate()
