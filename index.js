@@ -37,6 +37,28 @@ app.post('/tutor', async (req, res) => {
   }
 })
 
+app.put('/tutor/:id', async (req, res) => {
+  const id = req.params.id //capturando id para update por Routes Params
+ 
+  const dataTutor = { //capturando dados para atualização 
+    name: req.body.name,
+    phone: req.body.phone,
+    email: req.body.email,
+    date_of_birth: req.body.date_of_birth,
+    address: req.body.address
+  } 
+
+  await Tutor.update(dataTutor, { where: {id: id} }) //passando dados e identificação para realizar a atualização
+    .then(() => {
+      res.status(200).json({message: 'Tutor foi atualizado com sucesso:'})
+    })    
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json(error)
+    })
+})
+
+
 //Verificando conexão do banco de dados SQlite
 connection.authenticate()
 .then(() => {
