@@ -16,6 +16,26 @@ app.get('/tutors', async (req, res) => {
   res.status(200).send(tutors)
 })
 
+app.post('/tutor', async (req, res) => {
+  const { name, phone, email, date_of_birth, address } = req.body;
+  
+  if(!name || !phone || !email || !date_of_birth || !address){ //Verificando passagem de dados completa
+    return res.status(400).json({ error: 'Todos os campos devem ser preenchidos.' })
+  }
+  else{
+    await Tutor.create({ 
+      name, phone, email, date_of_birth, address
+    })
+    .then((newTutor) => {
+      console.log('Tutor criado com sucesso')
+      res.status(200).json({message:'Um novo tutor foi criado:', Tutor: newTutor})
+    })
+    .catch((error) => {
+      console.log(error)
+      res.status(500).json({message:'Erro a criar o tutor', error: error})
+    })
+  }
+})
 
 //Verificando conexão do banco de dados SQlite
 connection.authenticate()
