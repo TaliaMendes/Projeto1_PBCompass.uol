@@ -3,6 +3,7 @@ const connection  = require('./db/connection')
 const bodyParser  = require('body-parser');
 const Pet         = require('./models/Pet')
 const Tutor       = require('./models/Tutor');
+const { where } = require('sequelize');
 
 const app = express()
 const PORT = 3005
@@ -71,6 +72,57 @@ app.delete('/tutor/:id', async (req, res) => {
   })
 })
 
+app.post('/pet/:tutorid', async (req, res) => {
+  const tutorid = req.params.tutorid
+
+   const tutor = await Tutor.findByPk(tutorid); // Verificar se o tutor existe
+   if (!tutor) {
+     return res.status(404).json({ error: 'Tutor não encontrado' });
+   }
+
+  const { name, species , weight, date_of_birth} = req.body;
+  
+  Pet.create(
+    { name, species , weight, date_of_birth,  tutorId: tutorid })
+  .then((newPet) => {
+    res.status(200).json({message:'Um novo pet foi criado:', Pet: newPet})
+  })
+  .catch((error) => {
+    console.log(error)
+    res.status(500).json({message:'Erro a criar o tutor', error: error})
+  })
+})
+
+app.put('/pet/:petid/tutor/:tutorid', async (req, res) => {
+  const petid = req.params.petid
+ 
+  const updatePEt = {
+    name: req.body.name,
+    species: req.body.species,
+    weight: req.body.weight,
+    date_of_birth: req.body.date_of_birth,
+    tutorid : req.params.tutorid
+  }
+  
+  await Pet.update(updatePEt, {where : {id : petid}, returning: true})
+  .then(() => {
+    res.status(200).json({message: 'Pet atualizado com sucesso'})
+  })    
+  .catch((error) => {
+    console.log(error)
+    res.status(500).json(error)
+  })
+})
+
+app.delete('/pet/:petid/tutor/:tutorid', async (req, res) => {
+  const petid = req.params.petid
+  //const tutorid = req.params.tutorid
+
+  await Pet.destroy({where: {id : petid}})
+  res.send('ola')
+
+})
+
 //Verificando conexão do banco de dados SQlite
 connection.authenticate()
 .then(() => {
@@ -79,7 +131,6 @@ connection.authenticate()
 .catch((error) => {
   console.log(error)
 })
-
 
 //Inicializando o servidor
 app.listen(PORT, () => {
