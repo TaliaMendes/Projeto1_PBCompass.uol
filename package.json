@@ -1,0 +1,20 @@
+{
+  "name": "projeto1_-pbcompass",
+  "version": "1.0.0",
+  "description": "Primeiro desafio da trilha de Node.js - AWS, proposto pelo programa de bolsas Compass.Uol.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
