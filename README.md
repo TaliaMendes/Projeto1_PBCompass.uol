@@ -49,3 +49,12 @@ O presente projeto tem como principal objetivo implementar uma aplicação web q
 	        "weight": "3",
 	        "date_of_birth": "20/09/2023"
        }`
+
+## Utilização do arquivo .env
+- Crie um arquivo .env na raiz do projeto
+- Defina as variáveis de ambiente:
+  	- `PORT=` Porta em que o servidor deve rodar
+  	- `CAMINHO_SQLITE=` Caminho do arquivo do banco de dados SQLite
+- Acesse as variáveis de ambiente no projeto com:
+	- `const PORT = process.env.PORT;`
+   	- `process.env.CAMINHO_SQLITE`
